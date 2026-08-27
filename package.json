@@ -1,0 +1,14 @@
+{
+  "name": "voltride-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VoltRide e-bike store — system docs and orchestration for the multi-repo microservices demo",
+  "scripts": {
+    "start": "bash scripts/start.sh",
+    "stop": "bash scripts/stop.sh",
+    "dev": "concurrently -n catalog,cart,inventory,orders,pricing,notify,web -c blue,cyan,green,yellow,magenta,red,white \"npm --prefix ../voltride-catalog run dev\" \"npm --prefix ../voltride-cart run dev\" \"cd ../voltride-inventory && go run .\" \"cd ../voltride-orders && go run .\" \"../voltride-pricing/.venv/bin/uvicorn main:app --app-dir ../voltride-pricing --port 4005 --reload\" \"../voltride-notifications/.venv/bin/uvicorn main:app --app-dir ../voltride-notifications --port 4006 --reload\" \"npm --prefix ../voltride-frontend run dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

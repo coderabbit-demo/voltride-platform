@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+#
+# voltride-platform is the umbrella repo for the VoltRide multi-repo system:
+# docs and orchestration scripts. Its AGENTS.md holds the master
+# producer→consumer contract map for all seven code repos.
+
+language: "en-US"
+
+tone_instructions: >-
+  This repo is documentation and orchestration for a multi-repo system.
+  Verify docs stay consistent with the linked repositories and that script
+  changes keep every service startable.
+
+reviews:
+  profile: "assertive"
+  high_level_summary: true
+
+  path_instructions:
+    - path: "AGENTS.md"
+      instructions: >-
+        This file is the master producer→consumer contract map for the whole
+        VoltRide system. Flag any edit that removes or weakens a consumer
+        entry, and any inconsistency with the linked repositories' actual
+        contracts.
+    - path: "scripts/**"
+      instructions: >-
+        Orchestration for seven sibling repos. Verify port numbers
+        (4001-4006, 5173), repo names, and relative ../voltride-* paths stay
+        consistent across clone-all.sh, start.sh, stop.sh, setup-python.sh,
+        and package.json. stop.sh must only kill processes owned by this
+        checkout or matching VoltRide service signatures.
+
+knowledge_base:
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - "AGENTS.md"
+  linked_repositories:
+    - repository: "coderabbit-demo/voltride-frontend"
+      instructions: "React storefront; consumes catalog, cart, orders, notifications via Vite proxy."
+    - repository: "coderabbit-demo/voltride-catalog"
+      instructions: "Products service (4001); produces /summary for cart+notifications; consumes inventory+pricing."
+    - repository: "coderabbit-demo/voltride-cart"
+      instructions: "Cart service (4002); produces cart response for orders+frontend; consumes catalog+pricing."
+    - repository: "coderabbit-demo/voltride-inventory"
+      instructions: "Stock/reservations leaf service (4003); consumed by catalog, pricing, orders."
+    - repository: "coderabbit-demo/voltride-orders"
+      instructions: "Checkout orchestrator (4004); consumes cart, inventory, pricing, notifications; produces order response for frontend."
+    - repository: "coderabbit-demo/voltride-pricing"
+      instructions: "Quote service (4005); consumes inventory; quotes consumed by catalog, cart, orders."
+    - repository: "coderabbit-demo/voltride-notifications"
+      instructions: "Email simulation service (4006); validates orders' confirmation payload strictly; consumes catalog."

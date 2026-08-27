@@ -1,0 +1,4 @@
+node_modules/
+DEMO-SCENARIOS.md
+.DS_Store
+*.log
